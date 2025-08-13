@@ -1,103 +1,111 @@
-import Image from "next/image";
+'use client';
+import React, { useState, useEffect } from 'react';
+import './globals.css';
+import Register from './register/Register';
+import Login from './login/login';
+const t = {
+    taskeyDescription:
+        'Taskey Platform: A platform to display and purchase services from content creators and those who want to benefit from the displayed content.',
+    features: [
+        { title: "Freelancer Services", desc: "Find and hire talented content creators easily." },
+        { title: "Content Monetization", desc: "Let creators monetize their skills and services." },
+        { title: "Secure Payments", desc: "Safe, fast, and secure transactions." },
+        { title: "Community Driven", desc: "Built for creators and customers alike." },
+    ]
+};
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export default function App() {
+    const [darkMode, setDarkMode] = useState(false);
+    const [modeMessage, setModeMessage] = useState('');
+    const [showAbout, setShowAbout] = useState(false);
+    const [showLogin,setShowLogin] = useState (false);
+    const [ShowRegister,setShowRegister] = useState (false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    useEffect(() => {
+        document.body.className = darkMode ? 'dark-mode' : '';
+    }, [darkMode]);
+
+
+
+    return (
+        <div className={`main-container ${darkMode ? 'dark' : ''}`}>
+            {/* ✅ Taskey Label */}
+            <div className="animated-background">
+                <div className="blob blob1"></div>
+                <div className="blob blob2"></div>
+                <div className="blob blob3"></div>
+                <div className="particles"></div>
+            </div>
+
+            <div className="taskey-label">
+                Tas<span>key</span>
+            </div>
+
+            {/* ✅ Tape Menu */}
+            <div className="tape-menu">
+                
+                <button className="tape-item active">🏠 Home</button>
+                <button className="tape-item"onClick={()=>setShowLogin(true)}>🔐 Log In</button>
+                <Login
+                isOpen={showLogin}
+                onClose={()=>setShowLogin(false)}/>
+                <button className="tape-item" onClick={()=>setShowRegister(true)}>📝 Register</button>
+                <Register
+                 isOpen={ShowRegister}
+                 onClose={() => setShowRegister(false)}/>
+                <button className="tape-item" onClick={() => setShowAbout(!showAbout)}>ℹ️ About Taskey</button>
+
+            </div>
+
+            {/* ✅ About Taskey Cards */}
+            {showAbout && (
+                <div className="about-window fade-in">
+                    <h2 className="about-title">What Taskey Offers</h2>
+                    <div className="about-cards">
+                        {t.features.map((feature, i) => (
+                            <div className="about-card" key={i}>
+                                <h3>{feature.title}</h3>
+                                <p>{feature.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* 🌙 Dark Mode Toggle */}
+            <div className="dark-toggle">
+                <button
+                    className="theme-toggle-icon"
+                    onClick={() => {
+                        const nextMode = !darkMode;
+                        setDarkMode(nextMode);
+                        setModeMessage(nextMode ? '🌙 Dark Mode' : '☀️ Light Mode');
+                        setTimeout(() => setModeMessage(''), 2000);
+                    }}
+                >
+                    {darkMode ? '☀️' : '🌙'}
+                </button>
+            </div>
+
+            {/* 🔤 Hero Section */}
+            <div className="hero-section">
+                <div className="hero-text fade-in">
+                    <h1 className="hero-title">Your Gateway to Digital Services</h1>
+                    <p className="hero-description">{t.taskeyDescription}</p>
+                    <div className="explore-button">
+                        <span className="arrow">➜</span>
+                        <span className="explore-text">Explore Services</span>
+                    </div>
+
+                </div>
+                <div className="hero-image slide-in">
+                    <div className="logo-circle">
+                        <img src="/test.png" alt="Taskey Logo"/>
+                    </div>
+                </div>
+            </div>
+
+            {modeMessage && <div className="mode-indicator">{modeMessage}</div>}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }

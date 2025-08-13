@@ -1,26 +1,459 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Reset & Body */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Arial Black', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Background Animation */
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(-45deg, #38e4e4, #16b9cf, #0464c8);
+    background-size: 400% 400%;
+    animation: backgroundWeave 15s ease infinite;
+    color: black;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+@keyframes backgroundWeave {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 🔵 Tape Menu */
+.tape-menu {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 10px 20px;
+    display: flex;
+    gap: 15px;
+    animation: slideDown 1s ease forwards;
+    z-index: 1000;
+}
+.tape-item {
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s;
+    color: black;
+}
+.tape-item:hover {
+    background: #0464c8;
+    transform: translateY(-1px);
+}
+.tape-item.active {
+    background-color: #0464c8;
+    color: white;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Hero Section */
+.hero-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 100px 80px 40px;
 }
+.hero-text {
+    max-width: 50%;
+}
+.hero-title {
+    font-size: 5rem;
+    font-weight: 900;
+    margin: 10px 0;
+}
+.hero-description {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    max-width: 500px;
+}
+.hero-button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border: none;
+    background: #0464c8;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.hero-button:hover {
+    background: #024aa1;
+}
+/* 🎯 Logo Image Animation */
+.hero-image img {
+    width: 500px;
+    height: auto;
+    border-radius: 12px;
+    animation:
+            floatLogo 4s ease-in-out infinite,
+            auraGlow 4s ease-in-out infinite,
+            fadeIn 1.2s ease-in;
+    transition: transform 0.5s ease;
+}
+
+/* 🌊 Smooth floating motion */
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* ✨ Breathing light aura with multicolored shadows */
+@keyframes auraGlow {
+    0%, 100% {
+        box-shadow:
+                0 0 15px #67dddd,
+                0 0 30px #16b9cf,
+                0 0 45px #0464c8;
+    }
+    50% {
+        box-shadow:
+                0 0 5px #67dddd,
+                0 0 10px #16b9cf,
+                0 0 20px #0464c8;
+    }
+}
+
+/* 👻 Optional fade-in for page load */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.logo-circle {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #16b9cf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+            0 0 15px #67dddd,
+            0 0 30px #16b9cf,
+            0 0 45px #0464c8;
+    animation:
+            floatLogo 4s ease-in-out infinite,
+            auraGlow 4s ease-in-out infinite,
+            fadeIn 1.2s ease-in;
+}
+
+/* You can remove the animation from img if it's now on the circle */
+.logo-circle img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+
+/* Dark Mode Toggle */
+.dark-toggle {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 100;
+}
+.theme-toggle-icon {
+    font-size: 1.8rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    transition: transform 0.3s;
+}
+.theme-toggle-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Dark Mode */
+body.dark-mode,
+.main-container.dark {
+    background: linear-gradient(-45deg, #1a1a1a, #2a2a2a, #121212);
+    color: white;
+}
+body.dark-mode .tape-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+body.dark-mode .tape-item.active {
+    background-color: #67dddd;
+    color: black;
+}
+body.dark-mode .hero-title,
+body.dark-mode .hero-description,
+body.dark-mode .hero-button {
+    color: white;
+}
+body.dark-mode .hero-button {
+    background-color: #67dddd;
+    color: black;
+}
+body.dark-mode .hero-button:hover {
+    background-color: #16b9cf;
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 1s ease-in;
+}
+.slide-in {
+    animation: slideInRight 1.2s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(100px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mode Message */
+.mode-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(30, 30, 30, 0.85);
+    color: white;
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    animation: pulseFade 2.5s ease-in-out;
+    z-index: 1000;
+}
+@keyframes pulseFade {
+    0% { opacity: 0; transform: scale(0.8); }
+    10% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 0; transform: scale(0.8); }
+}
+/* ✅ Top-left Taskey label */
+.taskey-label {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: xxx-large;
+    font-weight: bold;
+    color: black;
+    z-index: 1000;
+}
+.taskey-label span {
+    color: #0464c8;
+}
+
+/* 🔄 Dark Mode support */
+body.dark-mode .taskey-label {
+    color: white;
+}
+body.dark-mode .taskey-label span {
+    color: #67dddd;
+}
+/* ✅ About Window Styles */
+.about-window {
+    position: absolute;
+    top: 100px;
+    right: 30px;
+    width: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    z-index: 1000;
+    animation: slideInAbout 0.5s ease;
+}
+.about-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.about-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.about-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+.about-card:hover {
+    transform: translateY(-4px);
+}
+.about-card h3 {
+    margin: 0 0 5px;
+    font-size: 1rem;
+}
+.about-card p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* 🔄 Dark Mode */
+body.dark-mode .about-window {
+    background-color: #2c2c2c;
+    color: white;
+}
+body.dark-mode .about-card {
+    background-color: #1e1e1e;
+}
+body.dark-mode .about-card p {
+    color: #ccc;
+}
+body.dark-mode .about-title {
+    color: #67dddd;
+}
+
+/* ✅ About Slide Animation */
+@keyframes slideInAbout {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🎯 Explore Services Button */
+.explore-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 20px;
+    background: #0464c8;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+}
+
+.explore-button:hover {
+    background: #024aa1;
+}
+
+.explore-button .arrow {
+    transition: transform 0.3s ease;
+    font-size: 1.3rem;
+}
+
+.explore-button .explore-text {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    white-space: nowrap;
+}
+
+.explore-button:hover .arrow {
+    transform: translateX(8px);
+}
+
+.explore-button:hover .explore-text {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 🌒 Dark Mode Compatibility */
+body.dark-mode .explore-button {
+    background: #67dddd;
+    color: black;
+}
+body.dark-mode .explore-button:hover {
+    background: #16b9cf;
+}
+.animated-background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    top: 0;
+    left: 0;
+}
+
+/* Floating blobs */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.3;
+    filter: blur(60px);
+    animation: moveBlobs 30s infinite alternate ease-in-out;
+}
+
+.blob1 {
+    width: 500px;
+    height: 500px;
+    background: #67dddd;
+    top: 10%;
+    left: -15%;
+    opacity: 0.5;
+}
+.blob2 {
+    width: 600px;
+    height: 600px;
+    background: #16b9cf;
+    bottom: 5%;
+    right: -20%;
+}
+.blob3 {
+    width: 400px;
+    height: 400px;
+    background: #0464c8;
+    top: 50%;
+    left: 50%;
+}
+
+/* Floating particles effect */
+.particles::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(white 1px, transparent 0);
+    background-size: 20px 20px;
+    opacity: 0.05;
+    animation: moveParticles 60s linear infinite;
+}
+
+@keyframes moveBlobs {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, -20px) scale(1.1); }
+}
+
+@keyframes moveParticles {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 0; }
+}
+
+
+
